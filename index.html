@@ -1,12 +1,20 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cocktail Vision</title>
+    <meta name="description" content="Un gioco educativo che simula problemi visivi!">
+    <meta name="theme-color" content="#f48fb1">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
         
         body {
             font-family: 'Poppins', sans-serif;
@@ -14,7 +22,7 @@
             background: linear-gradient(135deg, #f8bbd0, #f48fb1);
             color: #333;
             margin: 0;
-            padding: 15px;
+            padding: 10px;
             min-height: 100vh;
             transition: background 1s;
             line-height: 1.2;
@@ -23,78 +31,79 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 15px;
+            padding: 10px;
         }
         
         header {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
         .school-header {
-            font-size: 1rem;
+            font-size: 0.9rem;
             margin-bottom: 5px;
             color: #880e4f;
         }
         
         .authors {
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
             color: #880e4f;
         }
         
         h1 {
-            font-size: 2.8rem;
-            margin-bottom: 5px;
+            font-size: 2.2rem;
+            margin: 0 0 5px 0;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             color: #c2185b;
         }
         
         .subtitle {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
+            font-size: 1rem;
+            margin: 5px 0;
             color: #4a148c;
         }
         
         .creator {
             font-style: italic;
             color: #880e4f;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .rules {
             background-color: rgba(255, 255, 255, 0.6);
             border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
             text-align: left;
         }
         
         .rules h2 {
             color: #880e4f;
             text-align: center;
-            margin-top: 5px;
+            margin: 5px 0;
         }
         
         .rules ul {
             padding-left: 20px;
-            margin: 10px 0;
+            margin: 8px 0;
             color: #333;
         }
         
         .rules li {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
         }
         
         .game-container {
-            margin-top: 15px;
+            margin-top: 10px;
         }
         
         .challenge, #homeScreen, #gameOverScreen {
             display: none;
-            padding: 20px;
+            padding: 15px;
             border: 2px solid #c2185b;
             border-radius: 15px;
-            margin: 15px auto;
+            margin: 10px auto;
             background-color: rgba(255, 255, 255, 0.6);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             max-width: 600px;
@@ -105,7 +114,8 @@
         }
         
         .cocktail-image {
-            width: 440px;
+            width: 100%;
+            max-width: 300px;
             height: auto;
             border-radius: 10px;
             margin: 10px auto;
@@ -114,7 +124,8 @@
         }
         
         .game-image {
-            width: 550px;
+            width: 100%;
+            max-width: 360px;
             height: auto;
             border-radius: 10px;
             margin: 10px auto;
@@ -123,7 +134,8 @@
         }
         
         .victory-image {
-            width: 300px;
+            width: 100%;
+            max-width: 250px;
             height: auto;
             border-radius: 10px;
             margin: 10px auto;
@@ -134,12 +146,14 @@
         .gameover-images {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin: 15px 0;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
         }
         
         .gameover-image {
-            width: 240px;
+            width: 45%;
+            max-width: 180px;
             height: auto;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
@@ -147,27 +161,30 @@
         
         #menuBlurred {
             filter: blur(2px);
-            font-size: 36px;
-            padding: 15px;
+            font-size: 28px;
+            padding: 10px;
             background-color: rgba(255, 255, 255, 0.3);
             border-radius: 10px;
-            margin: 15px 0;
+            margin: 10px 0;
+            word-break: break-word;
+            overflow: hidden;
         }
         
         .start-button {
-            padding: 15px 35px;
-            margin: 15px;
+            padding: 12px 25px;
+            margin: 10px;
             background: linear-gradient(to right, #c2185b, #880e4f);
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 22px;
+            font-size: 18px;
             font-weight: bold;
             font-family: 'Montserrat', sans-serif;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
             text-transform: uppercase;
+            display: inline-block;
         }
         
         .start-button:hover {
@@ -180,8 +197,8 @@
         }
         
         .button {
-            padding: 12px 30px;
-            margin: 15px;
+            padding: 10px 20px;
+            margin: 10px;
             background: linear-gradient(to right, #c2185b, #880e4f);
             color: white;
             border: none;
@@ -192,6 +209,7 @@
             font-family: 'Montserrat', sans-serif;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-block;
         }
         
         .button:hover {
@@ -204,15 +222,17 @@
         }
         
         input[type="text"] {
-            padding: 12px;
+            padding: 10px;
             border: 2px solid #c2185b;
             border-radius: 50px;
             font-size: 16px;
-            width: 250px;
+            width: 100%;
+            max-width: 250px;
             text-align: center;
-            margin: 10px;
+            margin: 10px auto;
             background-color: rgba(255, 255, 255, 0.9);
             outline: none;
+            display: block;
         }
         
         input[type="text"]:focus {
@@ -221,17 +241,17 @@
         }
         
         #level {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             color: #880e4f;
-            margin-top: 15px;
+            margin-top: 10px;
         }
         
         #result {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
-            margin-top: 15px;
-            min-height: 36px;
+            margin-top: 10px;
+            min-height: 30px;
         }
         
         .win {
@@ -246,10 +266,10 @@
         
         #victoryScreen {
             display: none;
-            padding: 20px;
+            padding: 15px;
             border: 2px solid #c2185b;
             border-radius: 15px;
-            margin: 15px auto;
+            margin: 10px auto;
             background-color: rgba(255, 255, 255, 0.6);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             max-width: 600px;
@@ -257,11 +277,12 @@
         }
         
         .level-progress {
-            width: 80%;
-            height: 30px;
+            width: 100%;
+            max-width: 300px;
+            height: 20px;
             background-color: rgba(255, 255, 255, 0.5);
             border-radius: 15px;
-            margin: 15px auto;
+            margin: 10px auto;
             overflow: hidden;
             position: relative;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -278,9 +299,10 @@
         .level-labels {
             display: flex;
             justify-content: space-between;
-            width: 80%;
-            margin: 5px auto 15px;
-            font-size: 11px;
+            width: 100%;
+            max-width: 300px;
+            margin: 5px auto 10px;
+            font-size: 10px;
             color: #4a148c;
         }
         
@@ -288,26 +310,28 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 10px auto;
+            margin: 8px auto;
         }
         
         .lives-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin: 5px 0;
         }
         
         .lives-display {
             display: flex;
             justify-content: center;
             margin-bottom: 5px;
+            flex-wrap: wrap;
         }
         
         .life {
-            width: 80px;
-            height: 80px;
-            margin: 0 10px;
-            background-image: url('https://i.postimg.cc/cJW1WrW3/DALL-E-2025-03-06-17-52-53-A-perfect-tropical-cocktail-in-a-tall-glass-garnished-with-a-blue-cock.png');
+            width: 50px;
+            height: 50px;
+            margin: 0 5px;
+            background-image: url('images/cocktail.png');
             background-size: cover;
             background-position: center;
             border-radius: 50%;
@@ -319,17 +343,85 @@
         }
         
         .attempts-text {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: #880e4f;
             margin-top: 5px;
         }
         
         .credits {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: #4a148c;
-            margin-top: 15px;
+            margin-top: 10px;
             line-height: 1.3;
+        }
+        
+        .install-button {
+            display: none;
+            padding: 10px 20px;
+            margin: 8px auto;
+            background: linear-gradient(to right, #4a148c, #7b1fa2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Layout migliorato per dispositivi mobili */
+        .game-critical-content {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .game-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .start-button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+            
+            #menuBlurred {
+                font-size: 22px;
+                padding: 8px;
+            }
+            
+            .life {
+                width: 40px;
+                height: 40px;
+                margin: 0 3px;
+            }
+            
+            .credits {
+                font-size: 0.5rem;
+            }
+            
+            .rules li {
+                font-size: 0.85rem;
+                margin-bottom: 4px;
+            }
+            
+            .game-image {
+                max-width: 260px;
+            }
         }
         
         @keyframes fadeIn {
@@ -350,8 +442,7 @@
             75% { transform: translateX(-5px); }
             100% { transform: translateX(0); }
         }
-    </style><link rel="manifest" href="manifest.json">
-
+    </style>
 </head>
 <body>
     <div class="container">
@@ -362,10 +453,12 @@
             <p class="authors">Gioco creato da Sanjana Issen e Gabriele Tornabene</p>
         </header>
         
+        <button id="installButton" class="install-button">Installa l'App</button>
+        
         <!-- Schermata iniziale -->
         <div id="homeScreen">
             <h2>Benvenuto a Cocktail Vision!</h2>
-            <img src="https://i.postimg.cc/262Fg72W/Sanjana-Bar-Girl.jpg" alt="Cocktail Perfetto" class="cocktail-image">
+            <img src="images/barista.jpg" alt="Cocktail Perfetto" class="cocktail-image">
             
             <div class="rules">
                 <h2>Regole del Gioco</h2>
@@ -384,7 +477,11 @@
         <!-- Schermata del gioco -->
         <div class="game-container">
             <div id="gameScreen" class="challenge">
-                <img id="levelImage" src="https://i.postimg.cc/262Fg72W/Sanjana-Bar-Girl.jpg" alt="Cocktail Bar" class="game-image">
+                <!-- Contenuti critici che devono rimanere visibili -->
+                <div class="game-critical-content">
+                    <img id="levelImage" src="images/barista.jpg" alt="Cocktail Bar" class="game-image">
+                    <div id="menuBlurred"><span id="cocktailName">Spritz</span></div>
+                </div>
                 
                 <h2>Livello <span id="currentLevel">1</span></h2>
                 
@@ -404,9 +501,10 @@
                     <span>10</span>
                 </div>
                 
-                <div id="menuBlurred"><span id="cocktailName">Spritz</span></div>
-                <input type="text" id="menuInput" placeholder="Scrivi il cocktail">
-                <button class="button" onclick="checkAnswer()">Conferma</button>
+                <div class="game-actions">
+                    <input type="text" id="menuInput" placeholder="Scrivi il cocktail">
+                    <button class="button" onclick="checkAnswer()">Conferma</button>
+                </div>
                 
                 <div class="lives-wrapper">
                     <div class="lives-display">
@@ -422,8 +520,8 @@
                 <h2>GAME OVER!</h2>
                 <p>Sei troppo ubriaco! È ora di tornare a casa con un Taxi!</p>
                 <div class="gameover-images">
-                    <img src="https://i.postimg.cc/P5Q4mHYK/Sanjana-Bar-Girl-Livello10.jpg" alt="Game Over" class="gameover-image">
-                    <img src="https://i.postimg.cc/P5Q4mHYK/Sanjana-Bar-Girl-Livello10.jpg" alt="Game Over" class="gameover-image">
+                    <img src="images/barista-level10.jpg" alt="Game Over" class="gameover-image">
+                    <img src="images/barista-level10.jpg" alt="Game Over" class="gameover-image">
                 </div>
                 <button class="start-button" onclick="resetGame()">Ricomincia il PARTY</button>
             </div>
@@ -431,7 +529,7 @@
             <div id="victoryScreen">
                 <h2>Congratulazioni! Hai completato il gioco!</h2>
                 <p>Hai superato tutti i 10 livelli e dimostrato di essere un esperto di cocktail!</p>
-                <img src="https://i.postimg.cc/P5Q4mHYK/Sanjana-Bar-Girl-Livello10.jpg" alt="Victory Celebration" class="victory-image">
+                <img src="images/barista-level10.jpg" alt="Victory Celebration" class="victory-image">
                 <p>La barista ti offre un drink per celebrare la tua vittoria!</p>
                 <button class="start-button" onclick="resetGame()">Ricomincia il PARTY</button>
             </div>
@@ -440,201 +538,6 @@
         <p id="result"></p>
     </div>
     
-    <script>
-        let currentLevel = 1;
-        let attempts = 3;
-        let currentCocktail = "";
-        const maxLevel = 10;
-        let currentBlurLevel = 2; // Valore iniziale della sfocatura
-        
-        // Lista di cocktail classici e inventati
-        const cocktails = [
-            "Spritz", 
-            "Mojito", 
-            "Negroni", 
-            "Margarita", 
-            "Manhattan", 
-            "Daiquiri", 
-            "Cosmopolitan", 
-            "Sanjana Sunrise", 
-            "Sanjana Breeze", 
-            "Sanjana Blue Lagoon", 
-            "Sanjana Passion", 
-            "Sanjana Tropical Twist", 
-            "Sanjana Paradise", 
-            "Sanjana Fizz", 
-            "Sanjana Delight", 
-            "Sanjana Dream",
-            "Gabriele Mule",
-            "Gabriele Fizz",
-            "Gabriele Sour",
-            "Giampiero Martini",
-            "Giampiero Punch",
-            "Giampiero Royale",
-            "Simona Colada",
-            "Simona Sling",
-            "Simona Spritzer"
-        ];
-        
-        function getRandomCocktail() {
-            const randomIndex = Math.floor(Math.random() * cocktails.length);
-            return cocktails[randomIndex];
-        }
-        
-        function updateLevelImage() {
-            const levelImage = document.getElementById("levelImage");
-            
-            if (currentLevel >= 10) {
-                levelImage.src = "https://i.postimg.cc/P5Q4mHYK/Sanjana-Bar-Girl-Livello10.jpg";
-            } else if (currentLevel >= 8) {
-                levelImage.src = "https://i.postimg.cc/dQg4F4JR/Sanjana-Bar-Girl-Livello8.jpg";
-            } else if (currentLevel >= 6) {
-                levelImage.src = "https://i.postimg.cc/qvTwhqhz/Sanjana-Bar-Girl-Livello6.jpg";
-            } else if (currentLevel >= 4) {
-                levelImage.src = "https://i.postimg.cc/nc7ThBLy/Sanjana-Bar-Girl-Livello4.jpg";
-            } else if (currentLevel >= 2) {
-                levelImage.src = "https://i.postimg.cc/T2KCBZvY/Sanjana-Bar-Girl-Livello2.jpg";
-            } else {
-                levelImage.src = "https://i.postimg.cc/262Fg72W/Sanjana-Bar-Girl.jpg";
-            }
-        }
-        
-        function updateLives() {
-            for (let i = 1; i <= 3; i++) {
-                const lifeElement = document.getElementById("life" + i);
-                if (i <= attempts) {
-                    lifeElement.classList.remove("lost");
-                } else {
-                    lifeElement.classList.add("lost");
-                }
-            }
-            
-            // Aggiorna il testo dei tentativi rimanenti
-            document.getElementById("attemptsText").textContent = `Hai ancora ${attempts} ${attempts === 1 ? 'tentativo' : 'tentativi'}`;
-        }
-        
-        function startGame() {
-            // Nascondi la schermata iniziale e mostra il gioco
-            document.getElementById("homeScreen").style.display = "none";
-            document.getElementById("gameScreen").style.display = "block";
-            document.getElementById("gameOverScreen").style.display = "none";
-            document.getElementById("victoryScreen").style.display = "none";
-            
-            resetGame();
-        }
-        
-        function resetGame() {
-            currentLevel = 1;
-            attempts = 3;
-            currentBlurLevel = 2; // Resetta la sfocatura iniziale
-            
-            // Nascondi lo schermo di vittoria e mostra la sfida
-            document.getElementById("victoryScreen").style.display = "none";
-            document.getElementById("gameOverScreen").style.display = "none";
-            document.getElementById("gameScreen").style.display = "block";
-            
-            updateLevel();
-            updateProgressBar();
-            updateLives();
-            updateLevelImage();
-            
-            document.getElementById("result").innerText = "";
-            document.getElementById("result").className = "";
-            document.getElementById("menuInput").value = "";
-        }
-        
-        function updateLevel() {
-            // Seleziona un cocktail casuale
-            currentCocktail = getRandomCocktail();
-            document.getElementById("cocktailName").textContent = currentCocktail;
-            
-            // Aggiorna l'indicatore del livello
-            document.getElementById("currentLevel").textContent = currentLevel;
-            
-            // Applica la sfocatura attuale
-            document.getElementById("menuBlurred").style.filter = `blur(${currentBlurLevel}px)`;
-        }
-        
-        function updateProgressBar() {
-            // Aggiorna la barra di progresso
-            const progressPercentage = ((currentLevel - 1) / maxLevel) * 100;
-            document.getElementById("progressBar").style.width = progressPercentage + "%";
-        }
-        
-        function checkAnswer() {
-            let answer = document.getElementById("menuInput").value.toLowerCase();
-            
-            if (answer === currentCocktail.toLowerCase()) {
-                // Risposta corretta
-                document.getElementById("result").innerText = "HAI INDOVINATO! PUOI ORDINARE ANCORA";
-                document.getElementById("result").className = "win";
-                document.body.style.background = "linear-gradient(135deg, #27ae60, #2ecc71)";
-                
-                if (currentLevel === maxLevel) {
-                    // Il giocatore ha raggiunto il livello massimo
-                    setTimeout(() => {
-                        document.getElementById("gameScreen").style.display = "none";
-                        document.getElementById("victoryScreen").style.display = "block";
-                        document.body.style.background = "linear-gradient(135deg, #8e44ad, #9b59b6)";
-                    }, 1500);
-                } else {
-                    // Passa al livello successivo
-                    currentLevel++;
-                    
-                    // Aumenta leggermente la sfocatura ad ogni livello
-                    currentBlurLevel += 0.5;
-                    
-                    setTimeout(() => {
-                        updateLevel();
-                        updateProgressBar();
-                        updateLevelImage();
-                        document.getElementById("result").innerText = "Livello " + currentLevel;
-                        document.getElementById("result").className = "";
-                        document.getElementById("menuInput").value = "";
-                        document.body.style.background = "linear-gradient(135deg, #f8bbd0, #f48fb1)";
-                    }, 1500);
-                }
-                
-            } else {
-                // Risposta sbagliata
-                attempts--;
-                updateLives();
-                
-                if (attempts <= 0) {
-                    // Game over
-                    document.getElementById("result").innerText = "Game Over!";
-                    document.getElementById("result").className = "lose";
-                    document.body.style.background = "linear-gradient(135deg, #c0392b, #e74c3c)";
-                    
-                    setTimeout(() => {
-                        document.getElementById("gameScreen").style.display = "none";
-                        document.getElementById("gameOverScreen").style.display = "block";
-                    }, 1500);
-                } else {
-                    document.getElementById("result").innerText = "HAI SBAGLIATO! STAI ATTENTO";
-                    document.getElementById("result").className = "lose";
-                }
-            }
-        }
-        
-        // Event listener per premere Enter
-        document.getElementById("menuInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                checkAnswer();
-            }
-        });
-    </script>
-<script>
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("sw.js")
-            .then((registration) => {
-                console.log("Service Worker registrato con successo:", registration);
-            })
-            .catch((error) => {
-                console.log("Errore nella registrazione del Service Worker:", error);
-            });
-    }
-</script>
+    <script src="app.js"></script>
 </body>
 </html>
